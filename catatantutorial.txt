@@ -1,3 +1,31 @@
 #1
 1. Cara buat project laravel tinggal ketik composer create-project laravel/laravel nama_project
 2. Kalo mau di versi tertentu tinggal buat composer create-project laravel/laravel:^8.0 nama_project
+
+#2
+1. Folder penting
+Controller ada di app/http/controllers;
+Models ada di app/Models;
+Views ada di resources/views;
+Route ada di routes/web.php
+Folder public untuk letak css,js,img karena itu yang bisa diakses nantinya
+file env berisi konfigurasi laravelnya
+
+2. Untuk mengatur rute web nya ada di file web.php dan selain bisa menampilkan views yang diakses di Folder resources/views, bisa juga mengirim data ke rute nya...selebihnya ada di file web.php
+
+3. untuk memanggil file css,js,img yang ada di Folder public, caranya yaituu tinggal panggil saja nama filenya....jika filenya ada didalam Folder maka tambahkan dulu didepannya nama Foldernya (css/style.css)....bisa juga cara memanggilnya dengan menggunakan asset() contohnya "{{ asset('css/style.css') }}"
+
+4. berikut contoh untuk mengirim data ke rute
+Before
+Route::get('/about', function () {
+    return view('about');
+});
+
+After
+Route::get('/about', function () {
+    return view('about', [
+        'nama' => 'Putra Hidayat',
+        'email' => 'putrahidayat629@gmail.com',
+        'image' => 'pasfoto.jpg'
+    ]);
+});
