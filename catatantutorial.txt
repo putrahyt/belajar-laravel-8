@@ -1,0 +1,3 @@
+#1
+1. Cara buat project laravel tinggal ketik composer create-project laravel/laravel nama_project
+2. Kalo mau di versi tertentu tinggal buat composer create-project laravel/laravel:^8.0 nama_project
