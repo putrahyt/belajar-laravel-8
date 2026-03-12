@@ -29,6 +29,7 @@ Route::get('/about', function () {
 });
 
 Route::get('/blog', function () {
+
     $blog_posts = [
         [
             'title' => 'Judul Pertama',
@@ -82,4 +83,5 @@ Route::get('posts/{slug}', function($slug){
         'title' => 'Single Post',
         'post' => $new_post
     ]);
+
 });
