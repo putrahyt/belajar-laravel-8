@@ -29,3 +29,29 @@ Route::get('/about', function () {
         'image' => 'pasfoto.jpg'
     ]);
 });
+
+#3 - Blade Templating Engine
+1. sintaks blade displaying data -> {{ $name }}
+   tidak perlu buat <?= $name ?>
+   sintaks itu akan jalan kalau di nama file nya ada kata blade
+
+2. @yield('container') sebagai tanda untuk halaman childnya yang artinya isinya berbeda untuk setiap halamannya
+
+3. trus untuk panggilnya yaitu tambahin di setiap childnya
+    @extends('layouts.main') => ini parent nya
+
+    @section('container')
+        <h1>Halaman Home</h1>
+    @endsection
+
+4. @include('partials.navbar') memanggil file lain yang dimana itu memanggil navbar file
+
+5. {{ Request::is('/') ? 'active' : '' }} => untuk cek apakah rute yang aktif adalah home  atau tidak
+
+6. @dd untuk melakukan dump and die...dump itu var_dump sedangkan die untuk berhentikan script yang dibawahnya
+
+7. if (empty($new_post)) {
+        abort(404);
+    }
+
+    jika tidak ada post maka tampilkan halaman 404
