@@ -135,3 +135,29 @@ Route::get('/about', function () {
 8. Cara buat controller yaitu php artisan make:controller NamaController
 
 9. Route::get('/blog', [PostController::class, 'index']); => ini sudah pakai controller
+
+
+==================================================
+#Tutorial 5 - Database, Migration, Eloquent
+1. Ganti di env untuk setting db
+2. untuk buat migrasi => php artisan make:Migration create_nama_migrasi
+3. php artisan migrate untuk eksekusi jadi tabel
+4. tabel migation itu kalo udah pakai git gunanya untuk melacak perubahan yang dilakukan pada tabel di db
+5. php artisan migrate:rollback => untuk hapus tabel di db
+6. php artisan migrate:fresh => untuk rollback dan migrate sekaligus
+7. Untuk cari tipe data apa aja yg bisa dibuat di migrate, cari di  dokumentasi laravelnya yaitu column types
+8. tinker adalah aplikasi dalam laravel digunakan untuk berinteraksi dengan aplikasi laravel, ketikkan "php artisan tinker"
+9. fillable gunanya field yang bisa diisi di tabel
+10. cara jalanin tinkernya, $user = new App\Models\User
+    lalu cara isi fieldnya
+    $user->name = 'Nama';
+    $user->email = 'Email';
+    $user->password = bcrypt('12345);
+    trus kalo mau save tinggal ketik
+    $user->save();
+
+    kalo mau liat semua isinya ketikkan $user->all()
+    method all() itu udah milik Eloquent yang bisa dipakai
+    hasil yang dikembalikan method all() sudah bentuk Collection
+
+    $user->findOrFail(20) untuk cek apakah ada data dan kalo gaada data tampilkan pesan
