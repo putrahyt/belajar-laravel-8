@@ -1,8 +1,9 @@
-#1
+#Tutorial 1
 1. Cara buat project laravel tinggal ketik composer create-project laravel/laravel nama_project
 2. Kalo mau di versi tertentu tinggal buat composer create-project laravel/laravel:^8.0 nama_project
 
-#2
+==================================================================
+#Tutorial 2
 1. Folder penting
 Controller ada di app/http/controllers;
 Models ada di app/Models;
@@ -30,7 +31,8 @@ Route::get('/about', function () {
     ]);
 });
 
-#3 - Blade Templating Engine
+==================================================================
+#Tutorial 3 - Blade Templating Engine
 1. sintaks blade displaying data -> {{ $name }}
    tidak perlu buat <?= $name ?>
    sintaks itu akan jalan kalau di nama file nya ada kata blade
@@ -55,3 +57,81 @@ Route::get('/about', function () {
     }
 
     jika tidak ada post maka tampilkan halaman 404
+
+==================================================================
+#Tutorial 4 - Model, Collection, Controller
+1. php artisan make:model NamaModel -> untuk buat kelas model
+
+   php artisan make:model NamaModel --migation -> untuk migrasi menjadi tabel didalam database
+
+2. CTRL + Shift + P untuk membuat perintah laravel di vs code jadi cuma ketikkan artisan trus pilih mau buat apa
+
+3. Kalo manggil method static tinggal buat ::
+   jadi buat dulu nama class nya trus tambahin ::
+
+4. Kalau property biasa yang tidak ada kata static nya cara manggilnya yaitu tambahin $this->namaproperty;
+   
+   tapi kalau property nya static cara manggilnya tambahin self::namaproperty;
+
+   contoh:
+   class hewan {
+     private static $jumlahkaki=4;
+     private $warnahewan=hitam;
+
+     public function kaki() {
+        // static
+        return self::$jumlahkaki;
+     }
+
+     public function warna() {
+        // no static
+        return $this->warnahewan;
+     }
+   }
+
+5. Collection pembungkus sebuah array yang lebih sakti, memungkinkan menjalankan banyak function, cara buatnya tinggal tambahin collect(), lebih jauh lagi liat di dokumentasi laravel
+
+   Before
+   public static function all()
+    {
+        return self::$blog_posts; => $blog_posts ini adalah array
+    }
+
+   After
+   public static function all()
+    {
+        return collect(self::$blog_posts);
+    }
+
+6. penggunaan Collection
+    ini codingan sebelum menggunakan Collection
+    $post = [];
+    foreach($posts as $p) {
+        if($p['slug'] === $slug) {
+            $post = $p;
+        }
+    }
+
+    ini sesudah pakai Collection, cukup tambahin firstWhere
+    return $posts->firstWhere('slug', $slug);
+
+
+7. self:: itu untuk manggil property static sedangkan static:: itu untuk manggil method static
+
+   contoh
+   class hewan {
+     private static $jumlahkaki=4;
+
+     public static function kaki() {
+        // static
+        return self::$jumlahkaki; => manggil property static
+     }
+
+     public function hitungkaki() {
+        return static::kaki(); => manggil method static
+     }
+   }
+
+8. Cara buat controller yaitu php artisan make:controller NamaController
+
+9. Route::get('/blog', [PostController::class, 'index']); => ini sudah pakai controller
