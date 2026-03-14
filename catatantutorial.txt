@@ -161,3 +161,59 @@ Route::get('/about', function () {
     hasil yang dikembalikan method all() sudah bentuk Collection
 
     $user->findOrFail(20) untuk cek apakah ada data dan kalo gaada data tampilkan pesan
+
+
+======================================================
+#Tutorial 6 - Post
+1. php artisan make:model NamaModel => untuk buat model
+
+   jika ditambah -m akan buat migrasi
+   jika ditambah -f ditambah file factory
+   jika ditambah -c ditambah file controller
+
+2. Jika kita buat migrasi baru dan mau menjalankan dengan perintah php artisan migrate maka dia hanya menambahkan migrasi baru tersebut saja tanpa mengganggu migrasi yang lain
+
+3. - Post::pluck('title') => buat cari di tabel yang nama fieldnya title
+   - Post::find(2) => buat cari di tabel yang index ke 2
+   - Post::where('title', 'Judul Berubah') => buat cari data dalam tabel Post yang nama fieldnya title dan data nya "judul berubah"
+   - Post::find(3)->update(['title' => 'Judul Ketiga Berubah]); => ini untuk update, yang artinya cari dulu index ke tiga dari tabel Post dan update title nya
+
+4. {{ $post['id'] }} => ini masih pakai notasi array, bisa juga pakai notasi objek caranya {{ $post->id }}
+
+5. kalau menggunakan {{  }} => artinya kita menjalankan php echo dan juga htmlspecialchars(kalau ada tag html maka akan di escape)..kalau mau tag html juga dieksekusi maka pakai {!!  !!}
+
+6. ada cara lain dalam input data pakai tinke yaitu
+   Post::create([
+     'title' => 'Judul',
+     'body' => 'Body'
+   ])
+
+   tetapi harus buat dulu di model Post nya yaitu protected $fillable = ['title', 'body']; agar bisa diisi
+
+   ada perbedaan antara fillable dan guarded, kalo fillable itu yang boleh diisi dan sisanya gaboleh diisi sedangkan guarded yang gaboleh diisi dan sisanya boleh diisi
+
+   tidak hanya create saja, update pun juga harus cek fillable atau guarded
+
+7. Route model binding agar bisa kirim data tidak hanya id saja, bisa   yang lainnya contohnya mungkin title dsb
+
+   route::get('post/{post}', function(Post $post) {
+        return view('post');
+   })
+
+   function(Post $post) => Post itu model nya dan nama nya $post, harus sama di bagian get('post/{post}')
+
+   kalau gunakan controller
+   Route::get('posts/{post}', [PostController::class, 'show']);
+
+   public function show(Post $post)
+    {
+        return view('post', [
+            'title' => 'Single Post',
+            // 'post' => Post::find($slug)
+            'post' => $post
+        ]);
+    }
+
+   karena ini hanya pakai get('post/{post}') => {post} maka itu identifiernya id, jika hanya ingin mencari slug maka tinggal tambahin {post:slug}
+
+   intinya {post} harus sama pada bagian function(Post $post)
