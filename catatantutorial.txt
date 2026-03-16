@@ -217,3 +217,31 @@ Route::get('/about', function () {
    karena ini hanya pakai get('post/{post}') => {post} maka itu identifiernya id, jika hanya ingin mencari slug maka tinggal tambahin {post:slug}
 
    intinya {post} harus sama pada bagian function(Post $post)
+
+
+============================================================
+#Tutorial 7 - Post Category & Eloquent
+1. Agar tabel nya saling terhubung maka di migration nya ditambah foreignId...contoh $table->foreignId('category_id');
+
+2. Lalu tambahkan di modelnya relationship..misal  one to many, one to one, many to many
+  
+   Kalo ke kasus web kita, 1 Category bisa memiliki banyak post maka kardinalitasnya one to many, dan kebalikannya 1 post hanya punya 1 Category maka kardinalitasnya one to one
+
+   jadi kalo one to many maka di Eloquentnya "hasMany"
+   kalo one to one maka dibuat "belongsTo"
+
+   ingat!! kasus kita relationship utamanya itu di tabel "kategori".
+   Kalo hubungan kategori dan post itu one to one maka Eloquentnya "hasOne" dan kalo misalnya hubungan post ke kategorinya itu one to many maka Eloquentnya "belongsToMany"
+
+   nahh penggunaan nama foreign key nya itu defaultnya versi singular dari nama tabel dan ditambah (_id).. contoh nama tabelnya categories maka foreign key nya category_id.. contoh lagi nama tabelnya users maka foreign key nya user_id... bisa juga dicustom untuk nama nya tapi harus dikasih tau dulu di modelnya
+
+   kalo mau paham lagi liat dokumentasi
+
+3. Kalo mau menghubungkannya, maka didalam class modelnya buat nama method yang sama dengan nama modelnya..seperti ini
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    jadi itu mau hubungkan post dengan category..makanya nama methodnya harus sama dengan nama modelnya(ehh ga harus sama sihh)..cara manggilnya $post->category...atau $post->category->name
