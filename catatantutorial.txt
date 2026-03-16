@@ -233,6 +233,8 @@ Route::get('/about', function () {
    ingat!! kasus kita relationship utamanya itu di tabel "kategori".
    Kalo hubungan kategori dan post itu one to one maka Eloquentnya "hasOne" dan kalo misalnya hubungan post ke kategorinya itu one to many maka Eloquentnya "belongsToMany"
 
+   penggunaan belongsTo atau belongsToMany itu kalau tabelnya itu punya foreign key dari tabel utamanya
+
    nahh penggunaan nama foreign key nya itu defaultnya versi singular dari nama tabel dan ditambah (_id).. contoh nama tabelnya categories maka foreign key nya category_id.. contoh lagi nama tabelnya users maka foreign key nya user_id... bisa juga dicustom untuk nama nya tapi harus dikasih tau dulu di modelnya
 
    kalo mau paham lagi liat dokumentasi
@@ -245,3 +247,19 @@ Route::get('/about', function () {
     }
 
     jadi itu mau hubungkan post dengan category..makanya nama methodnya harus sama dengan nama modelnya(ehh ga harus sama sihh)..cara manggilnya $post->category...atau $post->category->name
+
+
+============================================================
+#Tutorial 8 - Database Seeder
+1. Cara buatnya yaitu php artisan make:seeder NamaSeeder
+   Cara panggilnya yaitu "php artisan db:seed" atau manggil class seed tertentu pake "php artisan db:seed --class=NamaSeeder"
+
+   bisa juga buat "php artisan migrate:fresh --seed" yang artinya melakukan migrasi dan juga menjalankan seeder
+
+2. cara buat manual seeder nya sama seperti buat di tinker
+   Category::create([
+            'name' => 'Personal',
+            'slug' => 'personal'
+        ]);
+
+3. intinya kalo mau melakuka crud, cek dulu di modelnya dan tambahin fillable atau guarded biar bisa melakukan crud
