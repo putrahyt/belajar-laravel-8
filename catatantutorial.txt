@@ -217,6 +217,7 @@ Route::get('/about', function () {
    karena ini hanya pakai get('post/{post}') => {post} maka itu identifiernya id, jika hanya ingin mencari slug maka tinggal tambahin {post:slug}
 
    intinya {post} harus sama pada bagian function(Post $post)
+   dan juga atur di link url nya yang harus ngarah ke slug (jika tidak mau defaultnya yaitu id)
 
 
 ============================================================
@@ -248,6 +249,20 @@ Route::get('/about', function () {
 
     jadi itu mau hubungkan post dengan category..makanya nama methodnya harus sama dengan nama modelnya(ehh ga harus sama sihh)..cara manggilnya $post->category...atau $post->category->name
 
+    nahh kalo mau nama methodnya diubah seperti ini
+    public function cat()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    maka tambahin
+    public function cat()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    maka dikasih tau juga untuk foreign key nya..jadi nama methodnya cat tapi untuk foreign key nya category_id
+
 
 ============================================================
 #Tutorial 8 - Database Seeder
@@ -263,3 +278,23 @@ Route::get('/about', function () {
         ]);
 
 3. intinya kalo mau melakuka crud, cek dulu di modelnya dan tambahin fillable atau guarded biar bisa melakukan crud
+
+
+============================================================
+#Tutorial 9  -  factory & faker
+1. Cara buatnya "php artisan make:factory NamaFactory"
+2. kalo mau install manual fakernya bisa buat "composer require fakerphp/faker"
+3. cek web faker di fakerphp.github.io
+4. cara agar faker jadi konfigurasi indonesia yaitu ke config/app.php lalu cari faker_locale...defaultnya 'en_US'
+   
+   tapi bisa juga dibuat di .env jadinya seperti ini
+   'faker_locale' => env('FAKE_LOCALE', 'en_US');
+
+    dan tambahin di .env nya FAKER_LOCALE=id_ID
+
+5. buat nama factorynya harus sesuai sama nama modelnya
+6.  cara panggil fakernyaa "$this->faker->name"
+    sering liat dokumentasi fakernya
+7. mt_rand(2, 8) => memanggil bilangan random yg isinya minimal dan maksimal
+8.  cara manggil factorynya di seeder yaitu "Post::factory(10)->create()"
+9. kalo mau dapatin data terbaru maka buat "Post::latest()->get()"
