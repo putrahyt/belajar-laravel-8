@@ -298,3 +298,37 @@ Route::get('/about', function () {
 7. mt_rand(2, 8) => memanggil bilangan random yg isinya minimal dan maksimal
 8.  cara manggil factorynya di seeder yaitu "Post::factory(10)->create()"
 9. kalo mau dapatin data terbaru maka buat "Post::latest()->get()"
+
+
+=======================================================
+#Tutorial 10 - N+1 Problem query
+1. Install clockwork (library laravel) untuk mengetahui kualitas query yang dihasilkan..caranya "composer require itsgoingd/clockwork"
+2. lalu install ekstensi di chrome nya yaitu clockwork yg dibuat oleh itsgoingd
+3. lazy loading query yang dilakukan ketika dibutuhkan
+   eager loading query yang dilakukan semua diawal
+   ini terjadi karena pakai relationship
+4. eager loading menghindari N+1
+5. cara atasinnya tinggal tambahin "with"...contoh Book::with('author')->get() atauu Book::with(['author', 'publisher'])->get()
+
+  atau ini
+  public function index()
+    {
+        return view('posts', [
+            'title' => 'All Posts',
+            // 'posts' => Post::all()
+            'posts' => Post::with(['author', 'category'])->latest()->get()
+        ]);
+    }
+    
+6. nah kalo dia pakai route model binding, pakai lazy eager loading
+pakai load(), contohnya
+   $books =  Book::all();
+   $books->load('author', 'publisher');
+
+   atau
+   Route::get('/author/{author:username}', function(User $author) {
+        return view('posts', [
+            'title' => "Post by Author : $author->name",
+            'posts' => $author->post->load('category', 'author'),
+        ]);
+    });
