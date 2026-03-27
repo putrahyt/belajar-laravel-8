@@ -332,3 +332,53 @@ pakai load(), contohnya
             'posts' => $author->post->load('category', 'author'),
         ]);
     });
+
+
+==========================================================
+#Tutorial 11 - Redesign UI
+1. penggunaan with (eager loading) bisa diletak di modelnya, tinggal tambahin 
+    protected $with = ['category', 'author'];
+
+2. {{ $posts[0]->created_at->diffForHumans() }}
+   diffForHumans() gunanya untuk mengatur waktu berapa lama dibuat dan itu milik vendor carbon 
+
+3. compact('photo') => fungsi di laravel untuk membungkus variabel ke dalam array agar bisa dibaca oleh view..cara panggilnya {{ $photo }} atau {{ $photo->urls['regular'] }}
+
+bisa juga gini
+
+$photo = Photo::random();
+$title = "Koleksi Foto Hari Ini";
+$user = "Budi";
+
+return view('unsplash.random', compact('photo', 'title', 'user'));
+
+cara panggilnya
+{{ $photo->urls['regular'] }}
+{{ $title }}
+{{ $user }}
+
+4. $posts->skip(1) buat ngeskip 1 postingan
+5. style bootstrap
+    px-3 artinya padding kiri kanan
+    py-2 artinya padding atas bawah
+    position-absolute artinya objeknya akan berada diatas, perintah untuk mengeluarkan elemen dari aliran normal. Elemen absolute akan mencari "bos" atau pembungkusnya yang memiliki position: relative. Jika tidak ada, dia akan mengikuti layar (browser).
+
+6. kalo menggunakan unsplash api letak ini di services.php 
+   'unsplash' => [
+        'access_key' => env('UNSPLASH_ACCESS_KEY'),
+    ],
+
+    dan juga di .env tambah access_key nya 
+    dan cara panggilnya seperti ini
+
+    HttpClient::init([
+            'applicationId' => config('services.unsplash.access_key'),
+            'utmSource'     => 'Laravel8'
+        ]);
+    
+    sebelum itu install dulu unsplash yaitu 
+    composer require unsplash/unsplash
+
+7. implode() artinya Mengubah banyak data array jadi string dengan tambahan delimiter
+   map() artinya mengubah setiap isi di dalam koleksi (array/collection) menjadi bentuk baru tanpa merusak data aslinya
+
