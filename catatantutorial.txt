@@ -382,3 +382,74 @@ cara panggilnya
 7. implode() artinya Mengubah banyak data array jadi string dengan tambahan delimiter
    map() artinya mengubah setiap isi di dalam koleksi (array/collection) menjadi bentuk baru tanpa merusak data aslinya
 
+
+==================================================
+#Tutorial 12 - Search & Pagination
+1. justify-content: center = Menengahkan secara Horizontal (Kiri-Kanan).
+   align-items: center = Menengahkan secara Vertikal (Atas-Bawah).
+
+2. $data->where('title', 'like', '%' . request('search') . '%');
+   artinya itu select * from post where title like '%search%'
+
+   kalo mau nambahin query yang lain tinggal tambahin orWhere
+
+   $data->where('title', 'like', '%' . request('search') . '%')
+        ->orwhere('body', 'like' , '%' . request('search') . '%');
+
+3. Kalo pencarian data itu tugasnya model bukan controller..jadi jangan buat di controller..dan request tugasnya controller
+
+4. query scope (fitur Eloquent - local scope)
+  -dibuat didalam model dan nama methodnya tambahin scope..contohnya scopePopular($query)
+
+  public function scopePopular($query) {
+    return $query->where('vote', '>', 100);
+  }
+
+  cara manggilnya local scopenya
+  $user = User::popular()->get();
+
+5.  method when() buat pengganti if else
+    penggunaan if 
+    if(isset($fillters['search']) ? $fillters['search'] : false) {
+        return $query->where('title', 'like', '%' . $fillters['search'] . '%')
+              ->orwhere('body', 'like' , '%' . $fillters['search'] . '%');
+     }
+
+    penggunaan when
+    $query->when($fillters['search'] ?? false, function($query, $search) {
+        return $query->where('title', 'like', '%' . $search . '%')
+            ->orwhere('body', 'like' , '%' . $search . '%');
+    });
+
+
+6. Null Coalescing operator contohnya
+   $fillters['search'] ?? false
+
+7. method whereHas untuk relationship dan harus ada di modelnya nama relationshipnya...contohh
+
+$query->when($fillters['category'] ?? false, function($query, $category) {
+                          ====================
+            return $query->whereHas('category', function($query) use ($category) {
+                $query->where('slug', $category);
+            });
+        });
+
+public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+8. cara buat Pagination yaituu tinggal tambahin paginate()..contoh
+   $data->filter(request(['search', 'category', 'author']))->paginate(7)
+
+
+   dann kalo mau membawa query sebelumnya (yaitu searching) tinggal tambahin withQueryString()
+
+   $data->filter(request(['search', 'category', 'author']))->paginate(7)->withQueryString()
+
+
+   dan untuk nampilin paginatenya tinggal buat links()
+   {{ $posts->links() }}
+   dann perlu diingat bahwa laravel defaultnya tailwind css jadi kalo mau pake pagination  yang bootstrap makaa tambahin Paginator::useBootstrap() di App\Providers\AppServiceProvider
+
+   dann kalo mau membawa query sebelumnya (yaitu searching) tinggal tambahin withQueryStrin()

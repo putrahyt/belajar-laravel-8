@@ -15,6 +15,59 @@ class Post extends Model
     protected $guarded = ['id'];
     protected $with = ['category', 'author'];
 
+    public function scopeFilter($query, array $filters)
+    {
+        // if(isset($fillters['search']) ? $fillters['search'] : false) {
+        //     return $query->where('title', 'like', '%' . $fillters['search'] . '%')
+        //          ->orwhere('body', 'like' , '%' . $fillters['search'] . '%');
+        // }
+
+        // $query->when($fillters['search'] ?? false, function($query, $search) {
+        //     return $query->where('title', 'like', '%' . $search . '%')
+        //          ->orwhere('body', 'like' , '%' . $search . '%');
+        // });
+
+        // Kode Lama
+        // $query->when($filters['search'] ?? false, function($query, $search) {
+        //    return $query->where(function($query) use ($search) {
+        //         $query->where('title', 'like', '%' . $search . '%')
+        //                     ->orWhere('body', 'like', '%' . $search . '%');
+        //     });
+        // });
+
+        // $query->when($filters['category'] ?? false, function($query, $category) {
+        //     return $query->whereHas('category', function($query) use ($category) {
+        //         $query->where('slug', $category);
+        //     });
+        // });
+
+        // $query->when($filters['author'] ?? false, function($query, $author) {
+        //     return $query->whereHas('author', function($query) use ($author) {
+        //         $query->where('username', $author);
+        //     });
+        // });
+
+        $query->when($filters['search'] ?? false, function($query, $search) {
+            return $query->where(function($query) use ($search) {
+                $query->where('posts.title', 'like', '%' . $search . '%')
+                    ->orWhere('posts.body', 'like', '%' . $search . '%');
+            });
+        });
+
+        $query->when($filters['category'] ?? false, function($query, $category) {
+            return $query->join('categories', 'posts.category_id', '=', 'categories.id')
+                        ->where('categories.slug', $category);
+        });
+
+        $query->when($filters['author'] ?? false, function($query, $author) {
+            return $query->whereHas('author', function($query) use ($author) {
+                $query->where('username', $author);
+            });
+        });
+
+        return $query->select('posts.*');
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
