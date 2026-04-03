@@ -453,3 +453,9 @@ public function category()
    dann perlu diingat bahwa laravel defaultnya tailwind css jadi kalo mau pake pagination  yang bootstrap makaa tambahin Paginator::useBootstrap() di App\Providers\AppServiceProvider
 
    dann kalo mau membawa query sebelumnya (yaitu searching) tinggal tambahin withQueryStrin()
+
+
+==================================================
+#Tutorial 13 - Login dan Registrasi
+1. class bootstrap "ms-auto" artinya margin start..bisa buat jadi ke kanan kalo di navbar
+2. Templating login ada di bootstrap
