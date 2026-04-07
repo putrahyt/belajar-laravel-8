@@ -459,3 +459,28 @@ public function category()
 #Tutorial 13 - Login dan Registrasi
 1. class bootstrap "ms-auto" artinya margin start..bisa buat jadi ke kanan kalo di navbar
 2. Templating login ada di bootstrap
+
+==================================================
+#Tutorial 14 - User Registrasi
+1. kalo mengirim data menggunakan method post maka di routenya buat Route::post()
+2. Kalo menggunakan form harus tambahin @csrf
+3. kalo mau nampilin error saat kirim form..di bladenya tambahin 
+   @error('namafield') 'komnetar error' @enderror
+
+   dan kalo mau liat pesan errornya tinggal tambahin {{ $message }}
+4. Kalo mau inputannya tidak hilang saat form dikirim karena ada input yang salah..bisa tambahin value="{{ old('name') }}" agar inputan sebelumnya tidak hilang
+
+5. Untuk buat session flash caranya gampang
+   bisa pake cara ini 
+   $request->session()->flash('success', 'Registration successfull! Please login');
+
+   atau cara ini 
+   return redirect('/login')->with('success', 'Registration successfull! Please login')
+
+   dan untuk cara manggilnya di blade caranya gini 
+   @if (session()->has('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
