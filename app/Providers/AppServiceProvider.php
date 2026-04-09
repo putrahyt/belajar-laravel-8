@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
             'utmSource'     => 'Laravel8'
         ]);
 
-        View::composer(['posts', 'post', 'home', 'category', 'categories'], function($view)  {
+        View::composer(['posts', 'post', 'home', 'category', 'categories', 'dashboard*'], function($view)  {
             $keyword = Cache::remember('random_db_keyword', 60, function() {
                     return Category::inRandomOrder()->first()->name ?? 'technology';
                 }); 

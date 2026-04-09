@@ -525,3 +525,35 @@ public function category()
 
             return  redirect()->intended('/dashboard');
         }
+
+============================================
+#Tutorial 16 - UI dashboard
+1. resources controller cara buatnya php artisan make:controller NamaController --resources
+
+bisa juga langsung terhubung ke model
+php artisan make:controller NamaController --resources --model:Photo 
+
+   nanti controller resourcesnya udah ada CRUD yaitu method
+   - index untuk nampilin halaman
+   - create untuk menampilkan halaman tambah
+   - store untuk menjalankan fungsi tambah
+   - show untuk lihat detail halamannya
+   - edit untuk halaman nampilin ubah data
+   - update untuk ubah datanya
+   - destroy untuk hapus data
+
+2. query where
+   Post::where('user_id', auth()->user()->id->get())
+
+3. kalo pake foreach bisa pake loop variabel (cek dokumentasi)
+   $loop->index 0-seterusnya
+   $loop->iteration  1-seterusnya
+
+4. di resources controller tidak bisa gunakan route model binding. Jadi harus pake id buat cari nya..bisa diakalin pake ini
+
+public function getRouteKeyName()
+{
+    return 'slug';
+}
+
+buat di modelnya, disitu dibuat return 'slug' artinya bisa mencari data berdasarkan slug bukan id lagi
