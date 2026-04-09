@@ -484,3 +484,44 @@ public function category()
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
+
+
+========================================================
+#Tutorial 15 - User Login dan Middleware
+1. Untuk authentication, laravel punya starter kit namanya laravel breeze dan laravel jetstrim
+
+2. bisa juga pakai maunal authentication user yaitu gunakan facades/auth
+
+3. authentication manual
+   $credential = $request->validate([
+            'email' => 'required|email:dns',
+            'password' => 'required'
+        ]);
+
+        if (Auth::attempt($credential)) {
+            $request->session()->regenerate();
+
+            return  redirect()->intended('/dashboard');
+        }
+
+        return back()->with('loginError', 'Login failed!');
+
+4. Middleware itu gunanya untuk cek apakah user sudah ter authentication apa belum. Secara otomatis laravel punya Middleware global yang udah ada di aplikasi laravelnya..letaknya di app\http\kernel.php
+
+5. secara default halaman Middleware yang ('guest') kalo user belum authentication, maka dia ngarah ke /home...bisa diganti yaitu pergi ke routeserviceprovider dan ganti yang public const HOME = '/home';
+
+6. {{ auth()->user()->name }} ini untuk ambil nama user..dan ini harus udah login..karena di controllernya tadi pakai 'Auth'
+
+7. Route bisa dikasih nama (Named Route) tinggal tambahin di routenya ->name('login')
+
+   Route::get('/login', [LoginController::class, 'index'])->middleware('guest')->name('login');
+
+8. @auth
+   @endauth
+
+   bisa dipakai karena sudah authentication di login controller bagian
+   if (Auth::attempt($credential)) {
+            $request->session()->regenerate();
+
+            return  redirect()->intended('/dashboard');
+        }
